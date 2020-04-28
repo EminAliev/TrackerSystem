@@ -1,5 +1,15 @@
 from django.db import models
 from django.db.models import CASCADE
+from django.urls import reverse
+
+STATUS = (
+    ('New', 'New'),
+    ('In progress', 'In progress'),
+    ('Ready', 'Ready'),
+    ('Completed', 'Completed'),
+    ('Canceled', 'Canceled'),
+    ('Being tested', 'Being tested')
+)
 
 
 class User(models.Model):
@@ -21,7 +31,7 @@ class Task(models.Model):
     problem = models.TextField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="team_lead")
-    status = models.CharField(max_length=30)
+    status = models.CharField(max_length=30, choices=STATUS)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_worker")
     date = models.DateTimeField(auto_now_add=True)
 
