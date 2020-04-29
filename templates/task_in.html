@@ -1,10 +1,11 @@
-<head>
-    <title>Tasks</title>
-</head>
 <h1>Задание:</h1>
-<p><strong>Проблема: </strong>{{ task.problem }}</p>
-<p><strong>Проект: </strong>{{ task.project }}</p>
-<p><strong>Статус: </strong> {{ task.status }}</p>
-<p><strong>Автор: </strong> {{ task.user }}</p>
-<p><strong>Работник: </strong> {{ task.owner }}</p>
-<p><strong>Дата создания: </strong> {{ task.date }}</p>
+<p><b>Проблема: </b>{{ task.problem }}</p>
+<p><b>Проект: </b>{{ task.project }}</p>
+<p><b>Статус: </b> {{ task.status }}</p>
+<p><b>Автор: </b> {{ task.user }}</p>
+<p><b>Работник: </b> {{ task.owner }}</p>
+<p><b>Дата создания: </b> {{ task.date }}</p>
+<form action="{% url 'task_cancel' task.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Удалить задание">
+</form>

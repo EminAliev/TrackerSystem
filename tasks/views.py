@@ -1,5 +1,5 @@
 from django.http import HttpResponseNotAllowed
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 
 from tasks.forms import FilterForm, TaskForm
@@ -50,3 +50,11 @@ def task_create(request):
             task_form.save()
         return redirect('task_list')
     return HttpResponseNotAllowed(['POST', 'GET'])
+
+
+def task_cancel(request, pk):
+    if request.method == 'DELETE' or request.method == 'POST':
+        task = get_object_or_404(Task, id=pk)
+        task.delete()
+        return redirect('task_list')
+    return HttpResponseNotAllowed(['POST'])
