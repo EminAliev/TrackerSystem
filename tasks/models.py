@@ -3,12 +3,12 @@ from django.db.models import CASCADE
 from django.urls import reverse
 
 STATUS = (
-    ('New', 'New'),
-    ('In progress', 'In progress'),
-    ('Ready', 'Ready'),
-    ('Completed', 'Completed'),
-    ('Canceled', 'Canceled'),
-    ('Being tested', 'Being tested')
+    ('Новый', 'Новый'),
+    ('В процессе', 'В процессе'),
+    ('Почти готов', 'Почти готов'),
+    ('Готов', 'Готов'),
+    ('Отменен', 'Отменен'),
+    ('Тестируется', 'Тестируется')
 )
 
 
@@ -37,6 +37,9 @@ class Task(models.Model):
 
     def __str__(self):
         return self.problem
+
+    def get_absolute_url(self):
+        return reverse('task_view', args=[str(self.id)])
 
 
 class Definition(models.Model):

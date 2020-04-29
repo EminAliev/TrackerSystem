@@ -2,7 +2,7 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 
-from tasks.forms import FilterForm
+from tasks.forms import FilterForm, TaskForm
 from tasks.models import Task
 
 
@@ -22,6 +22,7 @@ def tasks_render(request):
 
 class TaskView(DetailView):
     model = Task
+    template_name = 'task_in.html'
 
 
 def task_filter(**kwargs):
@@ -37,3 +38,15 @@ def task_filter(**kwargs):
     if kwargs.get('search'):
         list_tasks = list_tasks.filter(problem__icontains=kwargs.get('search'))
     return list_tasks
+
+
+def task_create(request):
+    if request.method == 'GET':
+        task_form = TaskForm()
+        return render(request, "task_create.html", {'form': task_form})
+    elif request.method == 'POST':
+        task_form = TaskForm(request.POST)
+        if task_form.is_valid():
+            task_form.save()
+        return redirect('task_list')
+    return HttpResponseNotAllowed(['POST', 'GET'])

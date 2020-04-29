@@ -1,27 +1,27 @@
 <head>
     <title>Tasks</title>
 </head>
-{% block content %}
-    <h1>Поиск</h1>
-    <form action="" method="get">
-        {% csrf_token %}
-        <table>
-            {{ form }}
-        </table>
-        <br>
-        <input type="submit" value="Поиск"/>
-    </form>
+<h1>Поиск</h1>
+<form action="" method="get">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <br>
+    <input type="submit" value="Поиск"/>
+</form>
 
-    <h1>Список заданий:</h1>
-    {% if list %}
-        <ul>
-            {% for task in list %}
-                <li>
-                    {{ task.problem }} (Создатель: {{ task.user }})
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>С такими запросами задания не найдено</p>
-    {% endif %}
-{% endblock %}
+<h1>Список заданий:</h1>
+{% if list %}
+    <ul>
+        {% for task in list %}
+            <li>
+                <b><a style="size: 12px" href="{{ task.get_absolute_url }}">{{ task.problem }}</a></b>
+                (Автор: {{ task.user }})
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>С такими запросами задания не найдено</p>
+{% endif %}
+<strong><a style="size: 20px" href="{% url 'task_create' %}">Добавить задание</a></strong>

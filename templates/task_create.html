@@ -1,0 +1,12 @@
+<head>
+    <title>Tasks</title>
+</head>
+<h1>Новое задание</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <br>
+    <input type="submit" value="Подтвердить"/>
+</form>

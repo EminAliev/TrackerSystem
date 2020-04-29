@@ -9,11 +9,24 @@ class FilterForm(Form):
     user = forms.ModelChoiceField(User.objects.all(), required=False)
     owner = forms.ModelChoiceField(User.objects.all(), required=False)
     status = forms.ChoiceField(choices=(
-        ('New', 'New'),
-        ('In progress', 'In progress'),
-        ('Ready', 'Ready'),
-        ('Completed', 'Completed'),
-        ('Canceled', 'Canceled'),
-        ('Being tested', 'Being tested'),
+        ('Новый', 'Новый'),
+        ('В процессе', 'В процессе'),
+        ('Почти готов', 'Почти готов'),
+        ('Готов', 'Готов'),
+        ('Отменен', 'Отменен'),
+        ('Тестируется', 'Тестируется'),
         (None, '------')), required=False)
     search = forms.CharField(max_length=150, required=False)
+
+
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = ['problem', 'project', 'status', 'user', 'owner']
+        labels = {
+            'problem': 'Проблема',
+            'project': 'Проект',
+            'status': 'Текущий статус',
+            'user': 'Автор задачи',
+            'owner': 'Работник, который должен выполнить',
+        }
