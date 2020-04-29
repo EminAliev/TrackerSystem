@@ -13,27 +13,39 @@ STATUS = (
 
 
 class User(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='Имя')
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         return self.name
 
 
 class Project(models.Model):
-    title = models.CharField(max_length=150)
-    user = models.ForeignKey(User, on_delete=CASCADE)
+    title = models.CharField(max_length=150, verbose_name='Название проекта')
+    user = models.ForeignKey(User, on_delete=CASCADE, verbose_name='Автор проекта')
+
+    class Meta:
+        verbose_name = 'Проект'
+        verbose_name_plural = 'Проекты'
 
     def __str__(self):
         return self.title
 
 
 class Task(models.Model):
-    problem = models.TextField()
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="team_lead")
-    status = models.CharField(max_length=30, choices=STATUS)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_worker")
-    date = models.DateTimeField(auto_now_add=True)
+    problem = models.TextField(verbose_name='Проблема')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="team_lead", verbose_name='Автор задачи')
+    status = models.CharField(max_length=30, choices=STATUS, verbose_name='Статус задачи')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_worker",
+                              verbose_name='Исполнитель задачи')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
+    class Meta:
+        verbose_name = 'Задачи'
 
     def __str__(self):
         return self.problem
@@ -43,10 +55,14 @@ class Task(models.Model):
 
 
 class Definition(models.Model):
-    definition = models.TextField()
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    definition = models.TextField(verbose_name='Комментарий')
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Задача')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор комментария')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
     def __str__(self):
         return self.definition

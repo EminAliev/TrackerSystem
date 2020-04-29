@@ -5,9 +5,9 @@ from tasks.models import Task, Project, User
 
 
 class FilterForm(Form):
-    project = forms.ModelChoiceField(Project.objects.all(), required=False)
-    user = forms.ModelChoiceField(User.objects.all(), required=False)
-    owner = forms.ModelChoiceField(User.objects.all(), required=False)
+    project = forms.ModelChoiceField(Project.objects.all(), required=False, label='Проект')
+    user = forms.ModelChoiceField(User.objects.all(), required=False, label='Автор')
+    owner = forms.ModelChoiceField(User.objects.all(), required=False, label='Исполнитель')
     status = forms.ChoiceField(choices=(
         ('Новый', 'Новый'),
         ('В процессе', 'В процессе'),
@@ -15,8 +15,8 @@ class FilterForm(Form):
         ('Готов', 'Готов'),
         ('Отменен', 'Отменен'),
         ('Тестируется', 'Тестируется'),
-        (None, '------')), required=False)
-    search = forms.CharField(max_length=150, required=False)
+        (None, '------')), required=False, label='Статус')
+    search = forms.CharField(max_length=150, required=False, label='Поиск')
 
 
 class TaskForm(ModelForm):
