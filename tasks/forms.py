@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form
 from django import forms
 
-from tasks.models import Task, Project, User
+from tasks.models import Task, Project, User, Definition
 
 
 class FilterForm(Form):
@@ -38,5 +38,15 @@ class TaskChangeForm(ModelForm):
         fields = ['status', 'owner']
         labels = {
             'status': 'Статус',
+            'owner': 'Исполнитель'
+        }
+
+
+class DefinitionForm(ModelForm):
+    class Meta:
+        model = Definition
+        fields = ['definition', 'owner']
+        labels = {
+            'definition': 'Комментарий',
             'owner': 'Исполнитель'
         }

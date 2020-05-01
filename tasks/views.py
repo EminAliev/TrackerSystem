@@ -2,8 +2,8 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 
-from tasks.forms import FilterForm, TaskForm, TaskChangeForm
-from tasks.models import Task
+from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm
+from tasks.models import Task, Definition
 
 
 def tasks_render(request):
@@ -23,6 +23,13 @@ def tasks_render(request):
 class TaskView(DetailView):
     model = Task
     template_name = 'tasks/task_in.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskView, self).get_context_data(**kwargs)
+        definitions = Definition.objects.filter(
+            task__id=self.kwargs['pk'])
+        context['definitions'] = definitions
+        return context
 
 
 def task_filter(**kwargs):
@@ -58,13 +65,13 @@ def task_change(request, pk):
         return render(request, 'tasks/task_change.html', {'form': task_form})
     elif request.method == 'POST':
         task_form = TaskChangeForm(request.POST)
-        task = Task.objects.get(id=pk)
+        task_object = Task.objects.get(id=pk)
         if task_form.is_valid():
             status_change = task_form.cleaned_data['status']
             owner_change = task_form.cleaned_data['owner']
-            task.status = status_change
-            task.worker = owner_change
-            task.save()
+            task_object.status = status_change
+            task_object.worker = owner_change
+            task_object.save()
         return redirect('task_view', pk=pk)
     return HttpResponseNotAllowed(['POST', 'GET'])
 
@@ -75,3 +82,19 @@ def task_cancel(request, pk):
         task.delete()
         return redirect('task_list')
     return HttpResponseNotAllowed(['POST'])
+
+
+def definition_create(request, pk):
+    if request.method == 'GET':
+        definition_form = DefinitionForm()
+        return render(request, "definitions/definition_create.html", {'form': definition_form})
+    elif request.method == 'POST':
+        definition_form = DefinitionForm(request.POST)
+        task_object = Task.objects.get(id=pk)
+        if definition_form.is_valid():
+            new_definition = definition_form.cleaned_data['definition']
+            owner = definition_form.cleaned_data['owner']
+            definition = Definition(definition=new_definition, owner=owner, task=task_object)
+            definition.save()
+        return redirect(task_object.get_absolute_url())
+    return HttpResponseNotAllowed(['POST', 'GET'])

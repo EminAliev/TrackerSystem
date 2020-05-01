@@ -5,6 +5,8 @@
 <p><b>Автор: </b> {{ task.user }}</p>
 <p><b>Работник: </b> {{ task.owner }}</p>
 <p><b>Дата создания: </b> {{ task.date }}</p>
+<p><b>Комментарии:</b>{% for def in definitions.values %}
+    <li> {{ def.definition }}</li> {% endfor %}</p>
 <form action="{% url 'task_cancel' task.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Удалить задание">
@@ -12,4 +14,7 @@
 <form action="{% url 'task_change' task.id %}" method="get">
     {% csrf_token %}
     <input type="submit" value="Изменить задание">
+</form>
+<form action="{% url 'definition_create' task.id %}" method="get">
+    <input type="submit" value="Добавить комментарий">
 </form>

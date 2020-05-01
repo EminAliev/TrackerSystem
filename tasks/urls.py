@@ -1,6 +1,6 @@
 from django.urls import path
 
-from tasks.views import tasks_render, TaskView, task_create, task_cancel, task_change
+from tasks.views import tasks_render, TaskView, task_create, task_cancel, task_change, definition_create
 
 urlpatterns = [
     path('list/', tasks_render, name='task_list'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('new_task/', task_create, name='task_create'),
     path('^task/(?P<pk>\d+)/cancel/$', task_cancel, name='task_cancel'),
     path('^task/(?P<pk>\d+)/change/$', task_change, name='task_change'),
+    path('^task/(?P<pk>\d+)/new_definition/$', definition_create, name='definition_create'),
 ]
