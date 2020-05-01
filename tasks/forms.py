@@ -30,3 +30,13 @@ class TaskForm(ModelForm):
             'user': 'Автор задачи',
             'owner': 'Работник, который должен выполнить',
         }
+
+
+class TaskChangeForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = ['status', 'owner']
+        labels = {
+            'status': 'Статус',
+            'owner': 'Исполнитель'
+        }
