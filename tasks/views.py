@@ -2,7 +2,7 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 
-from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm
+from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm, ProjectForm
 from tasks.models import Task, Definition, Project
 
 
@@ -125,3 +125,15 @@ def projects_render(request):
 class ProjectView(DetailView):
     model = Project
     template_name = 'projects/project_in.html'
+
+
+def project_create(request):
+    if request.method == 'GET':
+        project_form = ProjectForm()
+        return render(request, "projects/project_create.html", {'form': project_form})
+    elif request.method == 'POST':
+        project_form = ProjectForm(request.POST)
+        if project_form.is_valid():
+            project_form.save()
+        return redirect('projects_list')
+    return HttpResponseNotAllowed(['POST', 'GET'])

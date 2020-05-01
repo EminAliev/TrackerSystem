@@ -27,6 +27,8 @@ class Project(models.Model):
     title = models.CharField(max_length=150, verbose_name='Название проекта')
     user = models.ForeignKey(User, on_delete=CASCADE, verbose_name='Автор проекта')
 
+    # date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
     class Meta:
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'

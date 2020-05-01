@@ -50,3 +50,13 @@ class DefinitionForm(ModelForm):
             'definition': 'Комментарий',
             'owner': 'Исполнитель'
         }
+
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = ['title', 'user']
+        labels = {
+            'title': 'Название',
+            'user': 'Автор'
+        }

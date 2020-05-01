@@ -1,7 +1,7 @@
 from django.urls import path
 
 from tasks.views import tasks_render, TaskView, task_create, task_cancel, task_change, definition_create, \
-    projects_render, ProjectView
+    projects_render, ProjectView, project_create
 
 urlpatterns = [
     path('task_list/', tasks_render, name='task_list'),
@@ -12,4 +12,6 @@ urlpatterns = [
     path('^task/(?P<pk>\d+)/new_definition/$', definition_create, name='definition_create'),
     path('project_list/', projects_render, name='projects_list'),
     path('project/(?P<pk>\d+)/$', ProjectView.as_view(), name='project_view'),
+    path('new_project/', project_create, name='project_create'),
+
 ]
