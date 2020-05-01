@@ -1,0 +1,14 @@
+<head>
+    <title>Tasks</title>
+</head>
+<h1>Список проектов:</h1>
+{% if list %}
+    <ul>
+        {% for project in list %}
+            <li>
+                <b><a style="size: 12px" href="{{ project.get_absolute_url }}">{{ project.title }}</a></b>
+                (Автор: {{ project.user }})
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

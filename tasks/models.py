@@ -34,6 +34,9 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('project_view', args=[str(self.id)])
+
 
 class Task(models.Model):
     problem = models.TextField(verbose_name='Проблема')

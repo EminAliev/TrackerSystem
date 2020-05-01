@@ -1,0 +1,6 @@
+<h1>Проект:</h1>
+<p><b>Название: </b>{{ project.title }}</p>
+<p><b>Автор: </b>{{ project.user }}</p>
+<form action="{% url 'task_list' %}" method="get">
+    <input type="submit" value="Перейти к списку задач">
+</form>

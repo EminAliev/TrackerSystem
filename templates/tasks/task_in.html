@@ -21,3 +21,6 @@
 <form action="{% url 'definition_create' task.id %}" method="get">
     <input type="submit" value="Добавить комментарий">
 </form>
+<form action="{% url 'task_list' %}" method="get">
+    <input type="submit" value="Вернуться к списку задач">
+</form>

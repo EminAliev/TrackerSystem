@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 
 from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm
-from tasks.models import Task, Definition
+from tasks.models import Task, Definition, Project
 
 
 def tasks_render(request):
@@ -114,3 +114,14 @@ def definition_create(request, pk):
             definition.save()
         return redirect(task_object.get_absolute_url())
     return HttpResponseNotAllowed(['POST', 'GET'])
+
+
+def projects_render(request):
+    if request.method == "GET":
+        project_objects = Project.objects.all()
+        return render(request, "projects/list.html", {'list': project_objects})
+
+
+class ProjectView(DetailView):
+    model = Project
+    template_name = 'projects/project_in.html'
