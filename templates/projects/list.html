@@ -12,4 +12,11 @@
         {% endfor %}
     </ul>
 {% endif %}
-<strong><a style="size: 20px" href="{% url 'project_create' %}">Создать проект</a></strong>
+<form action="{% url 'project_create'%}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Создать проект">
+</form>
+<form action="{% url 'task_list'%}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Перейти ко всем задачам">
+</form>

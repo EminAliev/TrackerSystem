@@ -60,3 +60,12 @@ class ProjectForm(ModelForm):
             'title': 'Название',
             'user': 'Автор'
         }
+
+
+class ProjectChangeForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = ['title']
+        labels = {
+            'title': 'Название',
+        }

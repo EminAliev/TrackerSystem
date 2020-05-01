@@ -1,0 +1,9 @@
+<h1>Изменение проекта:</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <br>
+    <input type="submit" value="Изменить"/>
+</form>

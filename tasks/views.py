@@ -2,7 +2,7 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 
-from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm, ProjectForm
+from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm, ProjectForm, ProjectChangeForm
 from tasks.models import Task, Definition, Project
 
 
@@ -143,3 +143,29 @@ def project_detail(request, pk):
     project = get_object_or_404(Project, id=pk)
     task_object = Task.objects.filter(project__task__project_id=pk).distinct()
     return render(request, 'projects/project_in.html', {'project': project, 'task': task_object})
+
+
+def project_change(request, pk):
+    if request.method == 'GET':
+        project_form = ProjectChangeForm()
+        return render(request, 'projects/project_change.html', {'form': project_form})
+    elif request.method == 'POST':
+        project_form = ProjectChangeForm(request.POST)
+        project_object = Project.objects.get(id=pk)
+        if project_form.is_valid():
+            title_change = project_form.cleaned_data['title']
+            project_object.title = title_change
+            project_object.save()
+        return redirect('project_view', pk=pk)
+    return HttpResponseNotAllowed(['POST', 'GET'])
+
+
+def project_cancel(request, pk):
+    if request.method == 'DELETE' or request.method == 'POST':
+        project = get_object_or_404(Project, id=pk)
+        task_object = Task.objects.filter(project__task__project_id=pk).distinct()
+        # definitions_objects = Definition.objects.filter()
+        project.delete()
+        task_object.delete()
+        return redirect('projects_list')
+    return HttpResponseNotAllowed(['POST'])

@@ -17,4 +17,19 @@
 {% else %}
     <p>С такими запросами задания не найдено</p>
 {% endif %}
-<strong><a style="size: 20px" href="{% url 'task_create' %}">Добавить задание</a></strong>
+<form action="{% url 'task_create' %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Добавить задание">
+</form>
+<form action="{% url 'task_list' %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Перейти ко всем задачам">
+</form>
+<form action="{% url 'project_cancel' project.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Удалить проект">
+</form>
+<form action="{% url 'project_change' project.id %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Изменить проект">
+</form>
