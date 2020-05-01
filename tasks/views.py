@@ -29,7 +29,23 @@ class TaskView(DetailView):
         definitions = Definition.objects.filter(
             task__id=self.kwargs['pk'])
         context['definitions'] = definitions
+        definition_statistics = definitions_statistics(definitions)
+        context['definition_statistics'] = definition_statistics
         return context
+
+
+def definitions_statistics(definitions):
+    s = {}
+    for definition in definitions:
+        current_date = definition.date.date().strftime("%Y-%m-%d")
+        if current_date in s:
+            s[current_date]['d_definitions'] += 1
+            s[current_date]['d_owners'].append(definition.owner)
+        else:
+            s[current_date] = {'d_definitions': 1, 'd_owners': [definition.owner]}
+    for current_date in s:
+        s[current_date]['d_owners'] = len(set(s[current_date]['d_owners']))
+    return s
 
 
 def task_filter(**kwargs):
