@@ -137,3 +137,9 @@ def project_create(request):
             project_form.save()
         return redirect('projects_list')
     return HttpResponseNotAllowed(['POST', 'GET'])
+
+
+def project_detail(request, pk):
+    project = get_object_or_404(Project, id=pk)
+    task_object = Task.objects.filter(project__task__project_id=pk).distinct()
+    return render(request, 'projects/project_in.html', {'project': project, 'task': task_object})

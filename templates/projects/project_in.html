@@ -1,6 +1,20 @@
 <h1>Проект:</h1>
 <p><b>Название: </b>{{ project.title }}</p>
 <p><b>Автор: </b>{{ project.user }}</p>
-<form action="{% url 'task_list' %}" method="get">
-    <input type="submit" value="Перейти к списку задач">
+<form action="{% url 'projects_list' %}" method="get">
+    <input type="submit" value="Перейти к списку проектов">
 </form>
+<h1>Список заданий:</h1>
+{% if task %}
+    <ul>
+        {% for t in task %}
+            <li>
+                <b><a style="size: 12px" href="{{ t.get_absolute_url }}">{{ t.problem }}</a></b>
+                (Автор: {{ t.user }})
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>С такими запросами задания не найдено</p>
+{% endif %}
+<strong><a style="size: 20px" href="{% url 'task_create' %}">Добавить задание</a></strong>
