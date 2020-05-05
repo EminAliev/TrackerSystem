@@ -1,6 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CASCADE
 from django.urls import reverse
+
 
 STATUS = (
     ('Новый', 'Новый'),
@@ -10,17 +12,6 @@ STATUS = (
     ('Отменен', 'Отменен'),
     ('Тестируется', 'Тестируется')
 )
-
-
-class User(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Имя')
-
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-
-    def __str__(self):
-        return self.name
 
 
 class Project(models.Model):
@@ -71,3 +62,5 @@ class Definition(models.Model):
 
     def __str__(self):
         return self.definition
+
+

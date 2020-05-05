@@ -1,3 +1,7 @@
+import types
+
+from django.conf import settings
+from django.core.mail import send_mail
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
@@ -70,7 +74,16 @@ def task_create(request):
     elif request.method == 'POST':
         task_form = TaskForm(request.POST)
         if task_form.is_valid():
+            cd = task_form.cleaned_data
             task_form.save()
+            subject = 'Новое задание'
+            message = 'Автором {}, была создана новое задание "{}" в проекте "{}", статус задачи "{}, исполнитель задачи "{}"'.format(
+                cd['user'],
+                cd['problem'],
+                cd['project'],
+                cd['status'],
+                cd['owner'])
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['owner'].email])
         return redirect('task_list')
     return HttpResponseNotAllowed(['POST', 'GET'])
 
@@ -87,7 +100,13 @@ def task_change(request, pk):
             owner_change = task_form.cleaned_data['owner']
             task_object.status = status_change
             task_object.worker = owner_change
+            cd = task_form.cleaned_data
             task_object.save()
+            subject = 'Изменение задачи'
+            message = 'Статус задачи был изменен на "{}", исполнитель задачи: "{}"'.format(
+                cd['status'],
+                cd['owner'])
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['owner'].email])
         return redirect('task_view', pk=pk)
     return HttpResponseNotAllowed(['POST', 'GET'])
 
@@ -111,7 +130,12 @@ def definition_create(request, pk):
             new_definition = definition_form.cleaned_data['definition']
             owner = definition_form.cleaned_data['owner']
             definition = Definition(definition=new_definition, owner=owner, task=task_object)
+            cd = definition_form.cleaned_data
             definition.save()
+            subject = 'Добавлен комментарий к задаче'
+            message = 'Был добавлен комментарий к задаче пользователем "{}"'.format(
+                cd['owner'])
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['owner'].email])
         return redirect(task_object.get_absolute_url())
     return HttpResponseNotAllowed(['POST', 'GET'])
 

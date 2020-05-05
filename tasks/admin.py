@@ -4,6 +4,6 @@ from django.contrib import admin
 from tasks.models import Task, User, Project, Definition
 
 admin.site.register(Task)
-admin.site.register(User)
+#admin.site.unregister(User)
 admin.site.register(Project)
 admin.site.register(Definition)

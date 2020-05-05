@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path
 
 from tasks.views import tasks_render, TaskView, task_create, task_cancel, task_change, definition_create, \
