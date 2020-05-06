@@ -16,11 +16,11 @@
 </head>
 <body>
 <div class="header">
-    <span class="username">Hello, {{ request.user.username }}!</span>
-    <a href="{% url 'logout' %}?next=/" class="logout">Logout</a>
+    <span class="username">{{ request.user.username }}!</span>
+    <a href="{% url 'logout' %}?next=/" class="logout">Выйти</a>
 </div>
 <div class="messenger_conversation-start">
-    Welcome to global chat!
+   Чат
 </div>
 <div class="messenger" data-update="{% url 'typing' %}" data-user="{{ request.user.pk }}">
     <div class="messages__wrapper">
@@ -36,7 +36,7 @@
                     {% endfor %}
                 {% endif %}
                 <div class="status--commenting hidden">
-                    <span class="typing-username"></span><span> is typing message...</span>
+                    <span class="typing-username"></span><span> печатает сообщение...</span>
                 </div>
             </div>
         </div>
