@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'chat',
     'accounts',
     'crispy_forms',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+DATE_FORMAT = 'N j, Y, h:i a'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "TrackerSystem.routing.channel_routing",
+    },
+}
