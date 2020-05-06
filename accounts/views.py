@@ -4,6 +4,7 @@ from accounts.forms import RegistrationForm
 
 
 def register(request):
+    """Регистрация пользователя"""
     if request.method == 'POST':
         user_form = RegistrationForm(request.POST)
         if user_form.is_valid():

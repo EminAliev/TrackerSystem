@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models import CASCADE
 from django.urls import reverse
 
-
 STATUS = (
     ('Новый', 'Новый'),
     ('В процессе', 'В процессе'),
@@ -15,6 +14,7 @@ STATUS = (
 
 
 class Project(models.Model):
+    """Класс модели проекта"""
     title = models.CharField(max_length=150, verbose_name='Название проекта')
     user = models.ForeignKey(User, on_delete=CASCADE, verbose_name='Автор проекта')
 
@@ -32,6 +32,7 @@ class Project(models.Model):
 
 
 class Task(models.Model):
+    """Класс модели задачи"""
     problem = models.TextField(verbose_name='Проблема')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="team_lead", verbose_name='Автор задачи')
@@ -41,7 +42,8 @@ class Task(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     class Meta:
-        verbose_name = 'Задачи'
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Задачи'
 
     def __str__(self):
         return self.problem
@@ -51,6 +53,7 @@ class Task(models.Model):
 
 
 class Definition(models.Model):
+    """Класс модели коммментарии"""
     definition = models.TextField(verbose_name='Комментарий')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Задача')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор комментария')
@@ -62,5 +65,3 @@ class Definition(models.Model):
 
     def __str__(self):
         return self.definition
-
-

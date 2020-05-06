@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class RegistrationForm(forms.ModelForm):
+    """Форма регистрации пользователя"""
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
 

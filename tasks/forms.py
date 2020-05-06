@@ -5,6 +5,7 @@ from tasks.models import Task, Project, User, Definition
 
 
 class FilterForm(Form):
+    """Форма фильтрации задач"""
     project = forms.ModelChoiceField(Project.objects.all(), required=False, label='Проект')
     user = forms.ModelChoiceField(User.objects.all(), required=False, label='Автор')
     owner = forms.ModelChoiceField(User.objects.all(), required=False, label='Исполнитель')
@@ -20,6 +21,8 @@ class FilterForm(Form):
 
 
 class TaskForm(ModelForm):
+    """Форма создания задачи"""
+
     class Meta:
         model = Task
         fields = ['problem', 'project', 'status', 'user', 'owner']
@@ -33,6 +36,8 @@ class TaskForm(ModelForm):
 
 
 class TaskChangeForm(ModelForm):
+    """Форма изменения задачи"""
+
     class Meta:
         model = Task
         fields = ['status', 'owner']
@@ -43,6 +48,8 @@ class TaskChangeForm(ModelForm):
 
 
 class DefinitionForm(ModelForm):
+    """Форма создания комментария к задаче"""
+
     class Meta:
         model = Definition
         fields = ['definition', 'owner']
@@ -53,6 +60,8 @@ class DefinitionForm(ModelForm):
 
 
 class ProjectForm(ModelForm):
+    """Форма создания проекта"""
+
     class Meta:
         model = Project
         fields = ['title', 'user']
@@ -63,6 +72,8 @@ class ProjectForm(ModelForm):
 
 
 class ProjectChangeForm(ModelForm):
+    """Форма изменения проекта"""
+
     class Meta:
         model = Project
         fields = ['title']

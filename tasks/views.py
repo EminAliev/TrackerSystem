@@ -11,6 +11,7 @@ from tasks.models import Task, Definition, Project
 
 
 def tasks_render(request):
+    """Просмотр задач и их фильтрация"""
     if request.method == "GET":
         tasks_objects = Task.objects.all()
         filter_form = FilterForm(request.GET)
@@ -25,6 +26,7 @@ def tasks_render(request):
 
 
 class TaskView(DetailView):
+    """Просмотр конкретной задачи"""
     model = Task
     template_name = 'tasks/task_in.html'
 
@@ -39,6 +41,7 @@ class TaskView(DetailView):
 
 
 def definitions_statistics(definitions):
+    """Статистика по комментариям, оставленным к задачам"""
     s = {}
     for definition in definitions:
         current_date = definition.date.date().strftime("%Y-%m-%d")
@@ -53,6 +56,7 @@ def definitions_statistics(definitions):
 
 
 def task_filter(**kwargs):
+    """Фильтрация по признакам"""
     list_tasks = Task.objects.all()
     if kwargs.get('project'):
         list_tasks = list_tasks.filter(project=kwargs.get('project'))
@@ -68,6 +72,7 @@ def task_filter(**kwargs):
 
 
 def task_create(request):
+    """Создание новой задачи"""
     if request.method == 'GET':
         task_form = TaskForm()
         return render(request, "tasks/task_create.html", {'form': task_form})
@@ -76,6 +81,7 @@ def task_create(request):
         if task_form.is_valid():
             cd = task_form.cleaned_data
             task_form.save()
+            # при создании новой задаче работнику присылается e-mail письмо с описанием и статусом задачи
             subject = 'Новое задание'
             message = 'Автором {}, была создана новое задание "{}" в проекте "{}", статус задачи "{}, исполнитель задачи "{}"'.format(
                 cd['user'],
@@ -89,6 +95,7 @@ def task_create(request):
 
 
 def task_change(request, pk):
+    """Изменение задачи"""
     if request.method == 'GET':
         task_form = TaskChangeForm()
         return render(request, 'tasks/task_change.html', {'form': task_form})
@@ -102,6 +109,7 @@ def task_change(request, pk):
             task_object.worker = owner_change
             cd = task_form.cleaned_data
             task_object.save()
+            # при изменении задачи работнику присылается e-mail письмо с измененным статусом задачи
             subject = 'Изменение задачи'
             message = 'Статус задачи был изменен на "{}", исполнитель задачи: "{}"'.format(
                 cd['status'],
@@ -112,6 +120,7 @@ def task_change(request, pk):
 
 
 def task_cancel(request, pk):
+    """Удаление задачи"""
     if request.method == 'DELETE' or request.method == 'POST':
         task = get_object_or_404(Task, id=pk)
         task.delete()
@@ -120,6 +129,7 @@ def task_cancel(request, pk):
 
 
 def definition_create(request, pk):
+    """Создание комментария"""
     if request.method == 'GET':
         definition_form = DefinitionForm()
         return render(request, "definitions/definition_create.html", {'form': definition_form})
@@ -132,6 +142,7 @@ def definition_create(request, pk):
             definition = Definition(definition=new_definition, owner=owner, task=task_object)
             cd = definition_form.cleaned_data
             definition.save()
+            # при создания комментария к задаче работнику присылается e-mail письмо
             subject = 'Добавлен комментарий к задаче'
             message = 'Был добавлен комментарий к задаче пользователем "{}"'.format(
                 cd['owner'])
@@ -141,17 +152,20 @@ def definition_create(request, pk):
 
 
 def projects_render(request):
+    """Просмотр проектов"""
     if request.method == "GET":
         project_objects = Project.objects.all()
         return render(request, "projects/list.html", {'list': project_objects})
 
 
 class ProjectView(DetailView):
+    """Просмотр конкретного проекта"""
     model = Project
     template_name = 'projects/project_in.html'
 
 
 def project_create(request):
+    """Создание нового проекта"""
     if request.method == 'GET':
         project_form = ProjectForm()
         return render(request, "projects/project_create.html", {'form': project_form})
@@ -164,12 +178,14 @@ def project_create(request):
 
 
 def project_detail(request, pk):
+    """Просмотр задач, относящихся к конкретному проекту"""
     project = get_object_or_404(Project, id=pk)
     task_object = Task.objects.filter(project__task__project_id=pk).distinct()
     return render(request, 'projects/project_in.html', {'project': project, 'task': task_object})
 
 
 def project_change(request, pk):
+    """Изменение проекта"""
     if request.method == 'GET':
         project_form = ProjectChangeForm()
         return render(request, 'projects/project_change.html', {'form': project_form})
@@ -185,6 +201,7 @@ def project_change(request, pk):
 
 
 def project_cancel(request, pk):
+    """Удаление проекта"""
     if request.method == 'DELETE' or request.method == 'POST':
         project = get_object_or_404(Project, id=pk)
         task_object = Task.objects.filter(project__task__project_id=pk).distinct()

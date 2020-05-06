@@ -11,6 +11,7 @@ from chat.models import Chat, Message
 
 
 class ChatView(LoginRequiredMixin, TemplateView):
+    """Просмотр чата"""
     template_name = 'chat/page.html'
 
     def get_context_data(self, **kwargs):
@@ -24,6 +25,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
 
 class CreateMessageView(LoginRequiredMixin, CreateView):
+    """Создание сообщения"""
     model = Message
     fields = ['text', 'chat', 'sender']
 
@@ -56,6 +58,8 @@ class CreateMessageView(LoginRequiredMixin, CreateView):
 
 
 class MessageView(View):
+    """Просмотр сообщения"""
+
     def post(self, request, *args, **kwargs):
         user_pk = self.request.POST.get('user', 0)
         user = User.objects.get(pk=user_pk)
