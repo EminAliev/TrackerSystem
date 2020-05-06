@@ -1,26 +1,29 @@
-<h1>Задание:</h1>
-<p><b>Проблема: </b>{{ task.problem }}</p>
-<p><b>Проект: </b>{{ task.project }}</p>
-<p><b>Статус: </b> {{ task.status }}</p>
-<p><b>Автор: </b> {{ task.user }}</p>
-<p><b>Работник: </b> {{ task.owner }}</p>
-<p><b>Дата создания: </b> {{ task.date }}</p>
-<p><b>Комментарии:</b>{% for def in definitions.values %}
-    <li> {{ def.definition }}</li> {% endfor %}</p>
-<p><b>Статистика комментариев:</b>{% for day, val in definition_statistics.items %}
-    <li> В {{ day }} было добавлено {{ val.d_definitions }} комментариев от {{ val.d_owners }} исполнителей.
-    </li> {% endfor %}</p>
-<form action="{% url 'task_cancel' task.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Удалить задание">
-</form>
-<form action="{% url 'task_change' task.id %}" method="get">
-    {% csrf_token %}
-    <input type="submit" value="Изменить задание">
-</form>
-<form action="{% url 'definition_create' task.id %}" method="get">
-    <input type="submit" value="Добавить комментарий">
-</form>
-<form action="{% url 'task_list' %}" method="get">
-    <input type="submit" value="Вернуться к списку задач">
-</form>
+{% extends "base.html" %}
+{% block content %}
+    <h1>Задание:</h1>
+    <p><b>Проблема: </b>{{ task.problem }}</p>
+    <p><b>Проект: </b>{{ task.project }}</p>
+    <p><b>Статус: </b> {{ task.status }}</p>
+    <p><b>Автор: </b> {{ task.user }}</p>
+    <p><b>Работник: </b> {{ task.owner }}</p>
+    <p><b>Дата создания: </b> {{ task.date }}</p>
+    <p><b>Комментарии:</b>{% for def in definitions.values %}
+        <li> {{ def.definition }}</li> {% endfor %}</p>
+    <p><b>Статистика комментариев:</b>{% for day, val in definition_statistics.items %}
+        <li> В {{ day }} было добавлено {{ val.d_definitions }} комментариев от {{ val.d_owners }} исполнителей.
+        </li> {% endfor %}</p>
+    <form action="{% url 'task_cancel' task.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Удалить задание">
+    </form>
+    <form action="{% url 'task_change' task.id %}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="Изменить задание">
+    </form>
+    <form action="{% url 'definition_create' task.id %}" method="get">
+        <input type="submit" value="Добавить комментарий">
+    </form>
+    <form action="{% url 'task_list' %}" method="get">
+        <input type="submit" value="Вернуться к списку задач">
+    </form>
+{% endblock %}

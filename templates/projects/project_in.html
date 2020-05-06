@@ -1,35 +1,38 @@
-<h1>Проект:</h1>
-<p><b>Название: </b>{{ project.title }}</p>
-<p><b>Автор: </b>{{ project.user }}</p>
-<form action="{% url 'projects_list' %}" method="get">
-    <input type="submit" value="Перейти к списку проектов">
-</form>
-<h1>Список заданий:</h1>
-{% if task %}
-    <ul>
-        {% for t in task %}
-            <li>
-                <b><a style="size: 12px" href="{{ t.get_absolute_url }}">{{ t.problem }}</a></b>
-                (Автор: {{ t.user }})
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>С такими запросами задания не найдено</p>
-{% endif %}
-<form action="{% url 'task_create' %}" method="get">
-    {% csrf_token %}
-    <input type="submit" value="Добавить задание">
-</form>
-<form action="{% url 'task_list' %}" method="get">
-    {% csrf_token %}
-    <input type="submit" value="Перейти ко всем задачам">
-</form>
-<form action="{% url 'project_cancel' project.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Удалить проект">
-</form>
-<form action="{% url 'project_change' project.id %}" method="get">
-    {% csrf_token %}
-    <input type="submit" value="Изменить проект">
-</form>
+{% extends "base.html" %}
+{% block content %}
+    <h1>Проект:</h1>
+    <p><b>Название: </b>{{ project.title }}</p>
+    <p><b>Автор: </b>{{ project.user }}</p>
+    <form action="{% url 'projects_list' %}" method="get">
+        <input type="submit" value="Перейти к списку проектов">
+    </form>
+    <h1>Список заданий:</h1>
+    {% if task %}
+        <ul>
+            {% for t in task %}
+                <li>
+                    <b><a style="size: 12px" href="{{ t.get_absolute_url }}">{{ t.problem }}</a></b>
+                    (Автор: {{ t.user }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>С такими запросами задания не найдено</p>
+    {% endif %}
+    <form action="{% url 'task_create' %}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="Добавить задание">
+    </form>
+    <form action="{% url 'task_list' %}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="Перейти ко всем задачам">
+    </form>
+    <form action="{% url 'project_cancel' project.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Удалить проект">
+    </form>
+    <form action="{% url 'project_change' project.id %}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="Изменить проект">
+    </form>
+{% endblock %}

@@ -108,3 +108,36 @@ textarea:focus {
     border: 2px solid black;
     font-size: 18px;
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #689CD2;
+    color: #fff;
+    font-family: Uni Sans;
+}
+
+.header__section {
+    display: flex;
+    align-items: center;
+}
+
+.header__item {
+    padding: 10px 15px;
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.header__item:hover {
+    background-color: #FF9900;
+    border-radius: 4px;
+}
+
+.headerlogo {
+    font-weight: bold;
+}
+
+.headerButton {
+    cursor: pointer;
+}

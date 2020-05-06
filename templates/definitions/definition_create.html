@@ -1,9 +1,12 @@
-<h1>Комментарий:</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    <table>
-        {{ form }}
-    </table>
-    <br>
-    <input type="submit" value="Подтвердить"/>
-</form>
+{% extends "base.html" %}
+{% block content %}
+    <h1>Комментарий:</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <br>
+        <input type="submit" value="Подтвердить"/>
+    </form>
+{% endblock %}

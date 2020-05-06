@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}Educational Platform{% endblock %}</title>
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/reconnecting-websocket.min.js' %}"></script>
+</head>
+<body>
+<div class="header">
+    <div class="header__section">
+        <div class="header__item headerlogo">
+            Task Tracker
+        </div>
+        <div class="header__item headerButton"><a style="color: #fff;
+    text-decoration: none;" href="{% url "projects_list" %}">Проекты</a></div>
+        <div class="header__item headerButton"><a style="color: #fff;
+    text-decoration: none;" href="{% url "task_list" %}">Все задачи</a></div>
+        <div class="header__item headerButton"><a style="color: #fff;
+    text-decoration: none;" href="{% url "chat" %}">Чат</a></div>
+    </div>
+    <div class="header__section">
+        {% if request.user.is_authenticated %}
+            <div class="header__item headerButton"><a style="color: #fff;
+    text-decoration: none;" href="{% url "logout" %}">Выйти</a></div>
+        {% else %}
+            <div class="header__item headerButton"><a style="color: #fff;
+    text-decoration: none;" href="{% url "login" %}">Войти</a></div>
+            <div class="header__item headerButton"><a style="color: #fff;
+    text-decoration: none;" href="{% url "register" %}">Регистрация</a></div>
+        {% endif %}
+    </div>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script>
+    $(document).ready(function () {
+        {% block ajax_request %}
+        {% endblock %}
+    });
+</script>
+
+
+<script type="text/javascript" src="{% static "js/jquery-3.4.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/popper.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/mdb.min.js" %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</body>
+</html>

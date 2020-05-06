@@ -1,2 +1,5 @@
-<h1>Задание удалено</h1>
-<a style="size: 40px" href="{% url 'task_list' %}">Вернуться к списку</a>
+{% extends "base.html" %}
+{% block content %}
+    <h1>Задание удалено</h1>
+    <a style="size: 40px" href="{% url 'task_list' %}">Вернуться к списку</a>
+{% endblock %}
