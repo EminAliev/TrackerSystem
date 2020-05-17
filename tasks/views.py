@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,6 +11,7 @@ from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm, Pr
 from tasks.models import Task, Definition, Project, Code, SolveProblem
 
 
+@login_required
 def tasks_render(request):
     """Просмотр задач и их фильтрация"""
     if request.method == "GET":
@@ -24,7 +27,7 @@ def tasks_render(request):
             return render(request, "tasks/list.html", {'list': tasks_objects, 'form': filter_form})
 
 
-class TaskView(DetailView):
+class TaskView(LoginRequiredMixin, DetailView):
     """Просмотр конкретной задачи"""
     model = Task
     template_name = 'tasks/task_in.html'
@@ -73,6 +76,7 @@ def task_filter(**kwargs):
     return list_tasks
 
 
+@login_required
 def task_create(request):
     """Создание новой задачи"""
     if request.method == 'GET':
@@ -96,6 +100,7 @@ def task_create(request):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
+@login_required
 def task_change(request, pk):
     """Изменение задачи"""
     if request.method == 'GET':
@@ -121,6 +126,7 @@ def task_change(request, pk):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
+@login_required
 def task_cancel(request, pk):
     """Удаление задачи"""
     if request.method == 'DELETE' or request.method == 'POST':
@@ -130,6 +136,7 @@ def task_cancel(request, pk):
     return HttpResponseNotAllowed(['POST'])
 
 
+@login_required
 def definition_create(request, pk):
     """Создание комментария"""
     if request.method == 'GET':
@@ -153,6 +160,7 @@ def definition_create(request, pk):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
+@login_required
 def projects_render(request):
     """Просмотр проектов"""
     if request.method == "GET":
@@ -160,12 +168,13 @@ def projects_render(request):
         return render(request, "projects/list.html", {'list': project_objects})
 
 
-class ProjectView(DetailView):
+class ProjectView(LoginRequiredMixin, DetailView):
     """Просмотр конкретного проекта"""
     model = Project
     template_name = 'projects/project_in.html'
 
 
+@login_required
 def project_create(request):
     """Создание нового проекта"""
     if request.method == 'GET':
@@ -179,6 +188,7 @@ def project_create(request):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
+@login_required
 def project_detail(request, pk):
     """Просмотр задач, относящихся к конкретному проекту"""
     project = get_object_or_404(Project, id=pk)
@@ -186,6 +196,7 @@ def project_detail(request, pk):
     return render(request, 'projects/project_in.html', {'project': project, 'task': task_object})
 
 
+@login_required
 def project_change(request, pk):
     """Изменение проекта"""
     if request.method == 'GET':
@@ -202,6 +213,7 @@ def project_change(request, pk):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
+@login_required
 def project_cancel(request, pk):
     """Удаление проекта"""
     if request.method == 'DELETE' or request.method == 'POST':
@@ -214,6 +226,7 @@ def project_cancel(request, pk):
     return HttpResponseNotAllowed(['POST'])
 
 
+@login_required
 def problem_create(request, pk):
     """Создание проблемы, возникающая при выполнении таска"""
     if request.method == 'GET':
@@ -232,6 +245,7 @@ def problem_create(request, pk):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
+@login_required
 def problem_solved(request, pk):
     """Решение проблемы"""
     if request.method == 'GET':
@@ -248,13 +262,13 @@ def problem_solved(request, pk):
     return HttpResponseNotAllowed(['POST', 'GET'])
 
 
-class CodeList(ListView):
+class CodeList(LoginRequiredMixin, ListView):
     """Список проблем"""
     model = Code
     template_name = 'problems/list_problems.html'
 
 
-class SolveProblemList(ListView):
+class SolveProblemList(LoginRequiredMixin, ListView):
     """Список решений"""
     model = SolveProblem
     template_name = 'problems/list_solved_problems.html'
