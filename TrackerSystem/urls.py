@@ -13,18 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-
+from django.utils.functional import curry
+from django.views.defaults import server_error, page_not_found, permission_denied
 from TrackerSystem import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('tracker/', include('tasks.urls')),
-    path('auth/', include('django.contrib.auth.urls')),
-    path('', include('accounts.urls')),
-    path('chat/', include('chat.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_URL)
+                  path('admin/', admin.site.urls),
+                  path('tracker/', include('tasks.urls')),
+                  path('auth/', include('django.contrib.auth.urls')),
+                  path('', include('accounts.urls')),
+                  path('chat/', include('chat.urls')),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_URL)
 
+handler404 = curry(page_not_found, exception=Exception('Page not Found'), template_name='404.html')
+# handler500 = error_500

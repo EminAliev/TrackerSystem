@@ -1,13 +1,12 @@
-import types
-
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
-from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm, ProjectForm, ProjectChangeForm
-from tasks.models import Task, Definition, Project
+from tasks.forms import FilterForm, TaskForm, TaskChangeForm, DefinitionForm, ProjectForm, ProjectChangeForm, \
+    ProblemForm, ProblemSolveForm
+from tasks.models import Task, Definition, Project, Code, SolveProblem
 
 
 def tasks_render(request):
@@ -34,9 +33,12 @@ class TaskView(DetailView):
         context = super(TaskView, self).get_context_data(**kwargs)
         definitions = Definition.objects.filter(
             task__id=self.kwargs['pk'])
+        problems = Code.objects.filter(
+            task__id=self.kwargs['pk'])
         context['definitions'] = definitions
         definition_statistics = definitions_statistics(definitions)
         context['definition_statistics'] = definition_statistics
+        context['problems'] = problems
         return context
 
 
@@ -210,3 +212,46 @@ def project_cancel(request, pk):
         task_object.delete()
         return redirect('projects_list')
     return HttpResponseNotAllowed(['POST'])
+
+
+def problem_create(request, pk):
+    """Создание нового проекта"""
+    if request.method == 'GET':
+        problem_form = ProblemForm()
+        return render(request, "problems/problem_task.html", {'form': problem_form})
+    elif request.method == 'POST':
+        problem_form = ProblemForm(request.POST)
+        task_object = Task.objects.get(id=pk)
+        if problem_form.is_valid():
+            problem_object = Code.objects.create(name_problem=problem_form.cleaned_data['name_problem'],
+                                                 code=problem_form.cleaned_data['code'], owner=request.user,
+                                                 task=task_object,
+                                                 description=problem_form.cleaned_data['description'])
+            problem_object.save()
+        return redirect(task_object.get_absolute_url())
+    return HttpResponseNotAllowed(['POST', 'GET'])
+
+
+def problem_solved(request, pk):
+    if request.method == 'GET':
+        solve_form = ProblemSolveForm()
+        return render(request, "problems/solve.html", {'form': solve_form})
+    elif request.method == 'POST':
+        solve_form = ProblemSolveForm(request.POST)
+        problem = Code.objects.get(id=pk)
+        if solve_form.is_valid():
+            problem_object = SolveProblem.objects.create(text=solve_form.cleaned_data['text'], owner=request.user,
+                                                         problem=problem)
+            problem_object.save()
+        return redirect('problem_list')
+    return HttpResponseNotAllowed(['POST', 'GET'])
+
+
+class CodeList(ListView):
+    model = Code
+    template_name = 'problems/list_problems.html'
+
+
+class SolveProblemList(ListView):
+    model = SolveProblem
+    template_name = 'problems/list_solved_problems.html'

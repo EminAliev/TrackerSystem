@@ -26,4 +26,7 @@
     <form action="{% url 'task_list' %}" method="get">
         <input type="submit" value="Вернуться к списку задач">
     </form>
+    <form action="{% url 'create_problem' task.id %}" method="get">
+        <input type="submit" value="Добавить проблему">
+    </form>
 {% endblock %}

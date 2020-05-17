@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CASCADE
@@ -65,3 +67,21 @@ class Definition(models.Model):
 
     def __str__(self):
         return self.definition
+
+
+def uuid_help():
+    return lambda: str(uuid.uuid4())
+
+
+class Code(models.Model):
+    name_problem = models.TextField()
+    code = models.TextField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Задача')
+    description = models.TextField()
+
+
+class SolveProblem(models.Model):
+    text = models.TextField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    problem = models.ForeignKey(Code, on_delete=models.CASCADE)

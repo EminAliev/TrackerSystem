@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Решения</h2>
+    <ul>
+        {% for solve in object_list %}
+            <li><b>Проблема </b></li>{{ solve.problem.name_problem }}
+            <li><b>Автор решения </b></li>{{ solve.owner }}
+            <li><b>Задача </b>
+                <form action="{% url 'task_view' solve.problem.task.id %}" method="get">
+                    <input type="submit" value="{{ solve.problem.task.problem }}">
+                </form>
+            </li>
+            <pre class="prettyprint">
+                {{ solve.text }}
+            </pre>
+            <form action="{% url 'problem_list' %}" method="get">
+                <input type="submit" value="Вернуться к списку проблем">
+            </form>
+        {% endfor %}
+    </ul>
+{% endblock %}

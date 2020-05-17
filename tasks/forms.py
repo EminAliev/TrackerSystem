@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form
 from django import forms
 
-from tasks.models import Task, Project, User, Definition
+from tasks.models import Task, Project, User, Definition, Code, SolveProblem
 
 
 class FilterForm(Form):
@@ -79,4 +79,26 @@ class ProjectChangeForm(ModelForm):
         fields = ['title']
         labels = {
             'title': 'Название',
+        }
+
+
+class ProblemForm(ModelForm):
+    code = forms.CharField(label='Код', required=True, widget=forms.Textarea(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Code
+        fields = ['name_problem', 'description', 'code', 'task']
+        labels = {
+            'name_problem': 'Название проблемы',
+            'description': 'Описание проблемы',
+            'task': 'Задание'
+        }
+
+
+class ProblemSolveForm(ModelForm):
+    class Meta:
+        model = SolveProblem
+        fields = ['text']
+        labels = {
+            'text': 'Решение'
         }
