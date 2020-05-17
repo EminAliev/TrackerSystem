@@ -215,7 +215,7 @@ def project_cancel(request, pk):
 
 
 def problem_create(request, pk):
-    """Создание нового проекта"""
+    """Создание проблемы, возникающая при выполнении таска"""
     if request.method == 'GET':
         problem_form = ProblemForm()
         return render(request, "problems/problem_task.html", {'form': problem_form})
@@ -233,6 +233,7 @@ def problem_create(request, pk):
 
 
 def problem_solved(request, pk):
+    """Решение проблемы"""
     if request.method == 'GET':
         solve_form = ProblemSolveForm()
         return render(request, "problems/solve.html", {'form': solve_form})
@@ -248,10 +249,12 @@ def problem_solved(request, pk):
 
 
 class CodeList(ListView):
+    """Список проблем"""
     model = Code
     template_name = 'problems/list_problems.html'
 
 
 class SolveProblemList(ListView):
+    """Список решений"""
     model = SolveProblem
     template_name = 'problems/list_solved_problems.html'

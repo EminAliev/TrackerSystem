@@ -74,14 +74,24 @@ def uuid_help():
 
 
 class Code(models.Model):
-    name_problem = models.TextField()
-    code = models.TextField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    """Класс модели проблемы(если возникают трудности при решении таска)"""
+    name_problem = models.TextField(verbose_name='Название проблемы')
+    code = models.TextField(verbose_name='Код')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор проблемы')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Задача')
-    description = models.TextField()
+    description = models.TextField(verbose_name='Описание проблемы')
+
+    class Meta:
+        verbose_name = 'Проблема'
+        verbose_name_plural = 'Проблемы'
 
 
 class SolveProblem(models.Model):
-    text = models.TextField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    problem = models.ForeignKey(Code, on_delete=models.CASCADE)
+    """Класс модели решение проблемы"""
+    text = models.TextField(verbose_name='Решение')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор решения')
+    problem = models.ForeignKey(Code, on_delete=models.CASCADE, verbose_name='Проблема')
+
+    class Meta:
+        verbose_name = 'Решение проблемы'
+        verbose_name_plural = 'Решение проблемы'
